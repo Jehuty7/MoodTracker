@@ -1,18 +1,21 @@
-package com.jehuty.moodtracker;
+package com.jehuty.moodtracker.model;
 
 
 
-
-public class Mood {
+public class MoodUI {
 
     int smileyResource;
     int backgroundColor;
     int position;
 
-    public Mood(int smileyResource, int backgroundColor, int position) {
+
+
+
+    public MoodUI(int smileyResource, int backgroundColor, int position) {
         this.smileyResource = smileyResource;
         this.backgroundColor = backgroundColor;
         this.position = position;
+
     }
 
     public int getSmileyResource() {
@@ -26,5 +29,7 @@ public class Mood {
     public int getPosition() {
         return position;
     }
+
+
 }
 

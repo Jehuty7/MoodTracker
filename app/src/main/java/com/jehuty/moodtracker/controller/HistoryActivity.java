@@ -1,7 +1,9 @@
-package com.jehuty.moodtracker;
+package com.jehuty.moodtracker.controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.jehuty.moodtracker.R;
 
 public class HistoryActivity extends AppCompatActivity {
 
