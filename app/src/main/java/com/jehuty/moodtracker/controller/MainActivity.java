@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
 import com.google.gson.Gson;
 
 import com.jehuty.moodtracker.Utils.Constants;
@@ -34,12 +35,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton mHistoryButton;
     private ImageView mSmiley;
     private RelativeLayout mBackgroundLayout;
-    private  GestureDetector mGestureDetector;
+    private GestureDetector mGestureDetector;
     private SharedPreferences mPreferences;
     ArrayList<MoodUI> mListMoodUI = new ArrayList<>();
     ArrayList<MoodHistory> history = new ArrayList<>();
     private MoodHistory mCurrentMood;
-
 
 
     private int mPosition;
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         if (view.getId() == R.id.activity_main_button_commentary) {
             addCommentary();
 
-            }
+        }
     }
 
     private void initMoods() {
@@ -117,22 +117,23 @@ public class MainActivity extends AppCompatActivity {
         }
         setScreenFromMood(mPosition);
     }
+
     /**
-     Life Cycle
+     * Life Cycle
      */
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
 
-        for(MoodHistory mood:history) {
+        for (MoodHistory mood : history) {
             System.out.println(" ---> onResume: " + mood);
         }
         System.out.println(mPreferences.getInt(Constants.PREF_KEY_POSITION, mPosition));
 
-        }
+    }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
 
         long now = System.currentTimeMillis();
@@ -146,30 +147,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
-
-
         //Gson gson = new Gson();
         //String historyJson = gson.toJson(history);
         //System.out.println(historyJson);
-
-        //mPreferences.edit().putInt(Constants.PREF_KEY_POSITION, mPosition).putString(Constants.PREF_KEY_HISTORY,moodToJson).apply();
-       //System.out.println(mPreferences.getString(moodToJson,moodToJson));
+        //mPreferences.edit().putInt(Constants.PREF_KEY_POSITION, mPosition).putString(Constants.PREF_KEY_HISTORY,historyJson).apply();
+        //System.out.println(mPreferences.getString(moodToJson,moodToJson));
 
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
     }
 
     /**
-    Gesture
+     * Gesture
      */
 
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -177,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         private static final int SWIPE_THRESHOLD = 20;
 
         @Override
-        public boolean onDown (MotionEvent e) {
+        public boolean onDown(MotionEvent e) {
             return true;
         }
 
@@ -203,8 +200,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-    Methods
-    */
+     * Methods
+     */
 
     public void onSwipeTop() {
         --mPosition;
@@ -221,17 +218,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addCommentary() {
-         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         LayoutInflater inflater = this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_commentary,null);
+        View view = inflater.inflate(R.layout.dialog_commentary, null);
         final EditText editText = view.findViewById(R.id.commentEditTxt);
 
         builder.setView(view)
                 .setTitle(R.string.alert_dialog_title)
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i){ dialogInterface.dismiss();
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
                     }
                 })
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -241,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         String comment = editText.getText().toString();
                         mCurrentMood.setComment(comment);
-                        }
+                    }
 
                 })
                 .create()
@@ -249,37 +247,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-public void cyclingHistoryMoods() {
+    public void cyclingHistoryMoods() {
         history.add(new MoodHistory(mCurrentMood));
 
-    if (history.size() >= Constants.MAX_HISTORY_MOODS) {
-        history.remove(0);
-    }
-}
-
-public void compareCalendar(){
-
-    int lastPos = history.size()-1;
-    MoodHistory lastMood = history.get(lastPos);
-
-    Calendar calendar1 = Calendar.getInstance();
-    Calendar calendar2 = Calendar.getInstance();
-
-    calendar1.setTimeInMillis(mCurrentMood.getDate());
-    calendar2.setTimeInMillis(lastMood.getDate());
-
-    int compare1 = calendar1.get(Calendar.DAY_OF_YEAR);
-    int compare2 = calendar2.get(Calendar.DAY_OF_YEAR);
-    System.out.println(compare1);
-    System.out.println(compare2);
-
-    if (compare1 > compare2){
-        cyclingHistoryMoods();
-    } else if (compare1 == compare2){
-        history.remove(lastPos);
-        cyclingHistoryMoods();
+        if (history.size() >= Constants.MAX_HISTORY_MOODS) {
+            history.remove(0);
+        }
     }
 
+    public void compareCalendar() {
+
+        int lastPos = history.size() - 1;
+        MoodHistory lastMood = history.get(lastPos);
+
+        Calendar calendar1 = Calendar.getInstance();
+        Calendar calendar2 = Calendar.getInstance();
+
+        calendar1.setTimeInMillis(mCurrentMood.getDate());
+        calendar2.setTimeInMillis(lastMood.getDate());
+
+        int currentMoodDay = calendar1.get(Calendar.DAY_OF_YEAR);
+        int lastMoodDay = calendar2.get(Calendar.DAY_OF_YEAR);
+        int currentMoodYear = calendar1.get(Calendar.YEAR);
+        int lastMoodYear = calendar2.get(Calendar.YEAR);
+
+        System.out.println(currentMoodDay);
+        System.out.println(lastMoodDay);
+
+        if (currentMoodYear > lastMoodYear) {
+            cyclingHistoryMoods();
+        } else {
+            if (currentMoodDay > lastMoodDay) {
+                cyclingHistoryMoods();
+            } else if (currentMoodDay == lastMoodDay) {
+                history.remove(lastPos);
+                cyclingHistoryMoods();
+            }
+
+        }
     }
 
 }

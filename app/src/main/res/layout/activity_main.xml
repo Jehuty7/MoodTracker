@@ -50,11 +50,4 @@
         app:srcCompat="@drawable/smiley_happy"
         tools:ignore="ContentDescription"
         />
-
-
-
-
-
-
-
 </RelativeLayout>
