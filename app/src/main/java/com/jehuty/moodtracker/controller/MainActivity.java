@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mSmiley;
     private RelativeLayout mBackgroundLayout;
     private GestureDetector mGestureDetector;
-    private SharedPreferences mPreferences;
+    public SharedPreferences mPreferences;
     ArrayList<MoodUI> mListMoodUI = new ArrayList<>();
-    ArrayList<MoodHistory> history = new ArrayList<>();
+    public static ArrayList<MoodHistory> history = new ArrayList<>();
     private MoodHistory mCurrentMood;
 
 
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
     public void buttonClicked(View view) {
         if (view.getId() == R.id.activity_main_button_history) {
             Intent historyActivityIntent = new Intent(MainActivity.this, HistoryActivity.class);
+            historyActivityIntent.putExtra("history", history);
             startActivity(historyActivityIntent);
         }
 
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         //String historyJson = gson.toJson(history);
         //System.out.println(historyJson);
         //mPreferences.edit().putInt(Constants.PREF_KEY_POSITION, mPosition).putString(Constants.PREF_KEY_HISTORY,historyJson).apply();
-        //System.out.println(mPreferences.getString(moodToJson,moodToJson));
+
 
     }
 
@@ -250,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
     public void cyclingHistoryMoods() {
         history.add(new MoodHistory(mCurrentMood));
 
-        if (history.size() >= Constants.MAX_HISTORY_MOODS) {
+        if (history.size() > Constants.MAX_HISTORY_MOODS) {
             history.remove(0);
         }
     }
@@ -287,6 +288,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public static ArrayList<MoodHistory> getHistory() {
+        return history;
+    }
 }
 
 

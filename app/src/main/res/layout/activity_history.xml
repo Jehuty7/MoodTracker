@@ -25,6 +25,7 @@
             android:text="Day 1"/>
 
         <View
+            android:id="@+id/View1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/silver"
@@ -46,6 +47,7 @@
             android:text="Day 2"/>
 
         <View
+            android:id="@+id/View2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/silver"
@@ -67,6 +69,7 @@
             android:text="Day 3"/>
 
         <View
+            android:id="@+id/View3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/silver"
@@ -88,6 +91,7 @@
             android:text="Day 4"/>
 
         <View
+            android:id="@+id/View4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/silver"
@@ -109,6 +113,7 @@
             android:text="Day 5"/>
 
         <View
+            android:id="@+id/View5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/silver"
@@ -130,6 +135,7 @@
             android:text="Day 6"/>
 
         <View
+            android:id="@+id/View6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/silver"
@@ -151,6 +157,7 @@
             android:text="Day 7"/>
 
         <View
+            android:id="@+id/View7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/silver"
