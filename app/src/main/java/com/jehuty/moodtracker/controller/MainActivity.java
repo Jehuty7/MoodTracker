@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
     public void buttonClicked(View view) {
         if (view.getId() == R.id.activity_main_button_history) {
             Intent historyActivityIntent = new Intent(MainActivity.this, HistoryActivity.class);
-            historyActivityIntent.putExtra("history", history);
             startActivity(historyActivityIntent);
         }
 
