@@ -50,4 +50,15 @@
         app:srcCompat="@drawable/smiley_happy"
         tools:ignore="ContentDescription"
         />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/activity_main_button_commentary"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/share"
+        tools:ignore="ContentDescription" />
+
 </RelativeLayout>

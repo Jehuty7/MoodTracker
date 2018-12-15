@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,14 +20,19 @@ import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
 
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import com.jehuty.moodtracker.Utils.Constants;
+import com.jehuty.moodtracker.Utils.Utils;
 import com.jehuty.moodtracker.model.MoodHistory;
 import com.jehuty.moodtracker.model.MoodUI;
 import com.jehuty.moodtracker.R;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mSmiley;
     private RelativeLayout mBackgroundLayout;
     private GestureDetector mGestureDetector;
-    public SharedPreferences mPreferences;
-    ArrayList<MoodUI> mListMoodUI = new ArrayList<>();
-    public static ArrayList<MoodHistory> history = new ArrayList<>();
+    private SharedPreferences mPreferences;
+    private ArrayList<MoodUI> mListMoodUI = new ArrayList<>();
+    private ArrayList<MoodHistory> history = new ArrayList<>();
     private MoodHistory mCurrentMood;
-
+    private MoodHistory standbyMood;
 
     private int mPosition;
 
@@ -56,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
         mPosition = Constants.DEFAULT_MOOD_POSITION;
         mCurrentMood = new MoodHistory(mPosition);
 
-        mPreferences = getPreferences(MODE_PRIVATE);
-
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mGestureDetector = new GestureDetector(this, new GestureListener());
         mBackgroundLayout.setOnTouchListener(new View.OnTouchListener() {
 
@@ -125,10 +130,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        for (MoodHistory mood : history) {
-            System.out.println(" ---> onResume: " + mood);
-        }
-        System.out.println(mPreferences.getInt(Constants.PREF_KEY_POSITION, mPosition));
+
+        history = Utils.getMoodsFromPrefs(this);
+
+        String standbyMoodJson = mPreferences.getString(Constants.PREF_KEY_STANBY_MOOD, null);
+
+        Gson gson = new Gson();
+
+        MoodHistory standbyMood = gson.fromJson(standbyMoodJson, MoodHistory.class);
+
+
+        compareCalendar();
+
+        System.out.println("MainActivity onResume standbymood:" + standbyMood);
+        System.out.println("MainActivvity history onResume: " + history);
 
     }
 
@@ -140,17 +155,22 @@ public class MainActivity extends AppCompatActivity {
         mCurrentMood.setDate(now);
         mCurrentMood.setPosition(mPosition);
 
-        if (history.size() > 0) {
-            compareCalendar();
-        } else {
-            cyclingHistoryMoods();
-        }
+        standbyMood = mCurrentMood;
 
+        Gson gson = new Gson();
 
-        //Gson gson = new Gson();
-        //String historyJson = gson.toJson(history);
-        //System.out.println(historyJson);
-        //mPreferences.edit().putInt(Constants.PREF_KEY_POSITION, mPosition).putString(Constants.PREF_KEY_HISTORY,historyJson).apply();
+        String historyJson = gson.toJson(history);
+        String standbyMoodJson = gson.toJson(standbyMood);
+
+        mPreferences.edit().putInt(Constants.PREF_KEY_POSITION, mPosition).putString(Constants.PREF_KEY_HISTORY, historyJson)
+                .putString(Constants.PREF_KEY_STANBY_MOOD, standbyMoodJson).apply();
+
+        System.out.println("onPause standbymood :" + standbyMood);
+        //if (history.size() > 0) {
+        //    compareCalendar();
+        //} else {
+        //    cyclingHistoryMoods();
+        //}
 
 
     }
@@ -248,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void cyclingHistoryMoods() {
-        history.add(new MoodHistory(mCurrentMood));
+        history.add(new MoodHistory(standbyMood));
 
         if (history.size() > Constants.MAX_HISTORY_MOODS) {
             history.remove(0);
@@ -256,41 +276,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void compareCalendar() {
-
-        int lastPos = history.size() - 1;
-        MoodHistory lastMood = history.get(lastPos);
+        long now = System.currentTimeMillis();
 
         Calendar calendar1 = Calendar.getInstance();
         Calendar calendar2 = Calendar.getInstance();
 
-        calendar1.setTimeInMillis(mCurrentMood.getDate());
-        calendar2.setTimeInMillis(lastMood.getDate());
+        calendar1.setTimeInMillis(now);
+        if (standbyMood == null) {
+            //nothing
+        } else calendar2.setTimeInMillis(standbyMood.getDate());
 
         int currentMoodDay = calendar1.get(Calendar.DAY_OF_YEAR);
-        int lastMoodDay = calendar2.get(Calendar.DAY_OF_YEAR);
+        int standbyMoodDay = calendar2.get(Calendar.DAY_OF_YEAR);
         int currentMoodYear = calendar1.get(Calendar.YEAR);
-        int lastMoodYear = calendar2.get(Calendar.YEAR);
+        int standbyMoodYear = calendar2.get(Calendar.YEAR);
 
-        System.out.println(currentMoodDay);
-        System.out.println(lastMoodDay);
 
-        if (currentMoodYear > lastMoodYear) {
+        if (currentMoodYear > standbyMoodYear) {
             cyclingHistoryMoods();
-        } else {
-            if (currentMoodDay > lastMoodDay) {
-                cyclingHistoryMoods();
-            } else if (currentMoodDay == lastMoodDay) {
-                history.remove(lastPos);
-                cyclingHistoryMoods();
-            }
-
+        } else if (currentMoodDay > standbyMoodDay) {
+            cyclingHistoryMoods();
         }
     }
-
-    public static ArrayList<MoodHistory> getHistory() {
-        return history;
-    }
 }
+
+
 
 
 

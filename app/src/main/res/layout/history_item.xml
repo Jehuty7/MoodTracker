@@ -9,26 +9,37 @@
     android:background="@color/light_sage"
     android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/dayTxt"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Textview1" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dayTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Textview1" />
 
 
-    <ImageButton
-        android:id="@+id/commentButton"
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        app:srcCompat="@drawable/ic_comment_black" />
+        <ImageButton
+            android:id="@+id/commentButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="right"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_comment_black" />
+
+    </LinearLayout>
+
 
     <View
         android:id="@+id/paddingView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
+        android:layout_weight="9"
         android:background="@color/silver" />
 
 </LinearLayout>
