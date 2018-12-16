@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<MoodHistory> history = new ArrayList<>();
     private MoodHistory mCurrentMood;
     private MoodHistory standbyMood;
-
+    private String mMood;
+    private String mShare;
     private int mPosition;
 
 
@@ -89,7 +90,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (view.getId() == R.id.activity_main_button_commentary) {
             addCommentary();
+            }
 
+        if (view.getId() == R.id.activity_main_button_share) {
+
+            shareCurrentMood();
         }
     }
 
@@ -297,6 +302,31 @@ public class MainActivity extends AppCompatActivity {
         } else if (currentMoodDay > standbyMoodDay) {
             cyclingHistoryMoods();
         }
+    }
+
+
+    public void shareCurrentMood(){
+
+
+        if (mCurrentMood.getPosition() == 0) {
+            mMood = getResources().getString(R.string.sad_share);
+        } else if (mCurrentMood.getPosition() == 1){
+            mMood = getResources().getString(R.string.disapointed_share);
+        } else if (mCurrentMood.getPosition() == 2){
+            mMood = getResources().getString(R.string.normal_share);
+        } else if (mCurrentMood.getPosition() == 3){
+            mMood = getResources().getString(R.string.happy_share);
+        } else if (mCurrentMood.getPosition() == 4){
+            mMood = getResources().getString(R.string.super_happy_share);
+        }
+
+
+        String shareBody = getResources().getString(R.string.share) + mMood + " " + mCurrentMood.getComment();
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getResources().getString(R.string.subject));
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_using)));
     }
 }
 
