@@ -307,19 +307,23 @@ public class MainActivity extends AppCompatActivity {
 
     public void shareCurrentMood(){
 
-
-        if (mCurrentMood.getPosition() == 0) {
-            mMood = getResources().getString(R.string.sad_share);
-        } else if (mCurrentMood.getPosition() == 1){
-            mMood = getResources().getString(R.string.disapointed_share);
-        } else if (mCurrentMood.getPosition() == 2){
-            mMood = getResources().getString(R.string.normal_share);
-        } else if (mCurrentMood.getPosition() == 3){
-            mMood = getResources().getString(R.string.happy_share);
-        } else if (mCurrentMood.getPosition() == 4){
-            mMood = getResources().getString(R.string.super_happy_share);
+        switch (mCurrentMood.getPosition()){
+            case 0:
+                mMood = getResources().getString(R.string.sad_share);
+                break;
+            case 1:
+                mMood = getResources().getString(R.string.disapointed_share);
+                break;
+            case 2:
+                mMood = getResources().getString(R.string.normal_share);
+                break;
+            case 3:
+                mMood = getResources().getString(R.string.happy_share);
+                break;
+            case 4:
+                mMood = getResources().getString(R.string.super_happy_share);
+                break;
         }
-
 
         String shareBody = getResources().getString(R.string.share) + mMood + " " + mCurrentMood.getComment();
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
