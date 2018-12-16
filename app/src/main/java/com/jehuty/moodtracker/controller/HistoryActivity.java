@@ -51,7 +51,7 @@ public class HistoryActivity extends AppCompatActivity {
         List<MoodHistory> history = new Gson().fromJson(historyJson, listType);*/
 
         history = Utils.getMoodsFromPrefs(this);
-        System.out.println("HistoryActivity: "+history);
+        System.out.println("HistoryActivity: " + history);
 
         commentButton = findViewById(R.id.commentButton);
 
@@ -59,10 +59,11 @@ public class HistoryActivity extends AppCompatActivity {
 
         displayHistory();
 
-       // int diffDay = 10;
-       // if (diffDay == 1) System.out.println("hier");
-       // if (diffDay == 2 ) System.out.println("Avant-hier");
-       // if (diffDay >= 3) System.out.println(getString(R.string.x_days_ago, diffDay));
+
+        // int diffDay = 10;
+        // if (diffDay == 1) System.out.println("hier");
+        // if (diffDay == 2 ) System.out.println("Avant-hier");
+        // if (diffDay >= 3) System.out.println(getString(R.string.x_days_ago, diffDay));
 
     }
 
@@ -91,10 +92,49 @@ public class HistoryActivity extends AppCompatActivity {
                 final MoodHistory historyMood = history.get(i);
                 int historyMoodPosition = historyMood.getPosition();
 
-                view.setBackgroundColor(getResources().getColor(historyColors[historyMoodPosition]));
+                long moodDate = history.get(i).getDate();
+                long now = System.currentTimeMillis();
+
+                Calendar calendar1 = Calendar.getInstance();
+                Calendar calendar2 = Calendar.getInstance();
+                calendar1.setTimeInMillis(now);
+                calendar2.setTimeInMillis(moodDate);
+
+                int currentDay = calendar1.get(Calendar.DAY_OF_YEAR);
+                int moodDay = calendar2.get(Calendar.DAY_OF_YEAR);
+                int diffDays = currentDay - moodDay;
+
 
                 TextView txtView = view.findViewById(R.id.dayTxt);
-                txtView.setText("Item numéro " + (i + 1));
+
+                switch(diffDays){
+                    case 1:
+                        txtView.setText("Hier");
+                        break;
+                    case 2:
+                        txtView.setText("Avant-hier");
+                        break;
+                    case 3:
+                        txtView.setText("Il y a trois jours");
+                        break;
+                    case 4:
+                        txtView.setText("Il y a quatre jours");
+                        break;
+                    case 5:
+                        txtView.setText("Il y a cinq jours");
+                        break;
+                    case 6:
+                        txtView.setText("Il y a six jours");
+                        break;
+                    case 7:
+                        txtView.setText("Il y a une semaine");
+                        break;
+                }
+
+                if (diffDays > 7){
+                    txtView.setText("Il y a plus d'une semaine");
+                }
+                view.setBackgroundColor(getResources().getColor(historyColors[historyMoodPosition]));
 
                 paddingView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT, paddingWeight[historyMoodPosition]));
@@ -118,14 +158,53 @@ public class HistoryActivity extends AppCompatActivity {
 
 
     public void displayDayString() {
+        for (int i = 0; i <= history.size() - 1; i++) {
 
-        long now = System.currentTimeMillis();
-        Calendar calendar1 = Calendar.getInstance();
-        calendar1.setTimeInMillis(now);
+            long moodDate = history.get(i).getDate();
+            long now = System.currentTimeMillis();
 
+            Calendar calendar1 = Calendar.getInstance();
+            Calendar calendar2 = Calendar.getInstance();
+            calendar1.setTimeInMillis(now);
+            calendar2.setTimeInMillis(moodDate);
+
+            int currentDay = calendar1.get(Calendar.DAY_OF_YEAR);
+            int moodDay = calendar2.get(Calendar.DAY_OF_YEAR);
+            int diffDays = currentDay - moodDay;
+
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View view = inflater.inflate(R.layout.history_item, null);
+            TextView txtView = view.findViewById(R.id.dayTxt);
+
+            switch(diffDays){
+                case 1:
+                    txtView.setText("Hier");
+                    break;
+                case 2:
+                    txtView.setText("Avant-hier");
+                    break;
+                case 3:
+                    txtView.setText("Il y a trois jours");
+                    break;
+                case 4:
+                    txtView.setText("Il y a quatre jours");
+                    break;
+                case 5:
+                    txtView.setText("Il y a cinq jours");
+                    break;
+                case 6:
+                    txtView.setText("Il y a six jours");
+                    break;
+                case 7:
+                    txtView.setText("Il y a une semaine");
+                    break;
+            }
+
+            if (diffDays > 7){
+                txtView.setText("Il y a plus d'une semaine");
+            }
+        }
     }
-
-
 }
 
 
