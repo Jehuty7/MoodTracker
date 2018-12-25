@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">MoodTracker</string>
+
     <string name="ok">OK</string>
     <string name="cancel">Annuler</string>
     <string name="alert_dialog_title">"Ajoutez un commentaire à votre humeur du jour :"</string>
     <string name="comment">"Commentaire"</string>
+
     <string name="share_using">share_using</string>
     <string name="subject">"MoodTracker"</string>
     <string name="share">"Hey je vous partage mon humeur du jour avec l'application MoodTracker et aujourd'hui je suis "</string>
@@ -12,6 +14,31 @@
     <string name="normal_share">"normal(e)."</string>
     <string name="happy_share">"content(e)!"</string>
     <string name="super_happy_share">"très content(e)!"</string>
-    <string name="x_days_ago">%1$d days ago</string>
 
+    <string name="x_days_ago">Il y a %1$s jours</string>
+    <string-array name="numbers">
+        <item>zero</item>
+        <item>un</item>
+        <item>deux</item>
+        <item>trois</item>
+        <item>quatre</item>
+        <item>cinq</item>
+        <item>six</item>
+        <item>sept</item>
+        <item>huit</item>
+        <item>neuf</item>
+    </string-array>
+
+    <string-array name="mood_share_txt">
+        <item>@string/sad_share</item>
+        <item>@string/disapointed_share</item>
+        <item>@string/normal_share</item>
+        <item>@string/happy_share</item>
+        <item>@string/super_happy_share</item>
+    </string-array>
+
+    <string name="yesterday">Hier</string>
+    <string name="day_before_yesterday">Avant-hier</string>
+    <string name="one_week_ago">Il y a une semaine</string>
+    <string name="more_than_a_week">Il y a plus d\'une semaine</string>
 </resources>

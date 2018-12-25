@@ -2,11 +2,15 @@ package com.jehuty.moodtracker.model;
 
 import java.io.Serializable;
 
+/**
+ * This class will contains all informations needed to save a Mood
+ */
+
 public class MoodHistory extends Object implements Serializable{
 
-    private int position;
-    private String comment;
-    private long date;
+    private int position; // Position of the Mood
+    private String comment; // Comment saved by User
+    private long date; // Date saved
 
     public MoodHistory(int position, String comment, long date) {
         this.position = position;
@@ -48,10 +52,5 @@ public class MoodHistory extends Object implements Serializable{
 
     public void setDate(long date) {
         this.date = date;
-    }
-
-    @Override
-    public String toString() {
-        return "mood created on " + date;
     }
 }

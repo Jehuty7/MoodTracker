@@ -10,10 +10,14 @@ import com.jehuty.moodtracker.model.MoodHistory;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
-
 
 public class Utils {
+
+    /**
+     * We get the history Arraylist from SharedPreferences
+     * @param context current activity
+     * @return an empty Arraylist if there is not
+     */
    public static ArrayList<MoodHistory> getMoodsFromPrefs(Context context) {
        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
